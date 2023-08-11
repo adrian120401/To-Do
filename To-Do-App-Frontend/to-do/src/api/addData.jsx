@@ -18,6 +18,7 @@ export const addNewToDo = async(user,url, todo ) =>{
 }
 
 export const addNewList = async(user,url, newList) =>{
+  console.log(newList)
   try {
     const token = await user.getIdToken()
     const requestOptions = {
@@ -25,11 +26,10 @@ export const addNewList = async(user,url, newList) =>{
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newList)
+      }
     }
 
-   return await fetch(`${url}/api/addNewList`,requestOptions)
+   return await fetch(`${url}/api/addNewList?list=${newList}`,requestOptions)
 }catch (error) {
     console.log(error)
     throw error

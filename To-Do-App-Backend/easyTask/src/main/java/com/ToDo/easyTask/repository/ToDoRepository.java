@@ -57,15 +57,6 @@ public class ToDoRepository {
         todoDocument.update("isCompleted", status);
 
     }
-    public void addNewList(String userId, String list) throws ExecutionException, InterruptedException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        int newId = verifyDocument(userId, "lists");
-        Map<String, String> listObject = new HashMap<>();
-        listObject.put("id", String.valueOf(newId));
-        listObject.put("name", list);
-        dbFirestore.collection("todos").document(userId).collection("lists").document(String.valueOf(newId)).set(listObject);
-    }
-
 
     public void addNewTodo(String userId, ToDo todo) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();

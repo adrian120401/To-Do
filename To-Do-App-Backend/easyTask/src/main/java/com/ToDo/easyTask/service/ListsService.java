@@ -4,6 +4,7 @@ import com.ToDo.easyTask.repository.ListsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -15,7 +16,15 @@ public class ListsService {
         this.listsRepository = listsRepository;
     }
 
-    public List<String> getListsByUser(String userId) throws ExecutionException, InterruptedException {
+    public void addNewList(String userId, String list) throws ExecutionException, InterruptedException {
+        listsRepository.addNewList(userId,list);
+    }
+
+    public List<Map<String,String>> getListsByUser(String userId) throws ExecutionException, InterruptedException {
         return listsRepository.getListsByUser(userId);
+    }
+
+    public List<String> getDefaultLists() throws ExecutionException, InterruptedException {
+        return listsRepository.getDefaultLists();
     }
 }

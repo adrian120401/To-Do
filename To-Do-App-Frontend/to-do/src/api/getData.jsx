@@ -34,4 +34,24 @@ const getListsByUser = async(user,url) => {
   }
 }
 
-export { getAllTodos, getListsByUser };
+const getDefaultLists = async(user,url) => {
+  try {
+    const token = await user.getIdToken();
+    const requestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(`${url}/api/getDefaultLists`, requestOptions);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+
+
+export { getAllTodos, getListsByUser, getDefaultLists };

@@ -63,18 +63,6 @@ public class ToDoController {
             return ResponseEntity.badRequest().body("{\"message\": \"Could not created to-do\"}");
         }
     }
-    @PostMapping("/api/addNewList")
-    public ResponseEntity<String> addNewList(@RequestHeader("Authorization") String authToken, @RequestBody String list)throws Exception{
-        try {
-            String idToken = authToken.replace("Bearer ", "");
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-            String userId = decodedToken.getUid();
-            toDoService.addNewList(userId, list);
-            return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"List created correctly\"}");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body("{\"message\": \"Could not created list\"}");
-        }
-    }
 
     @GetMapping("/test")
     public String test(){

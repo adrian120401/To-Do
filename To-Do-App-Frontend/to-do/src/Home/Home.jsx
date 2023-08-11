@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { UserAuth } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAdd } from "@fortawesome/free-solid-svg-icons";
-import { getAllTodos, getListsByUser } from "../api/getData";
+import { getAllTodos, getListsByUser, getDefaultLists } from "../api/getData";
 import { toDoCompleted } from "../api/editData";
 import { SelectedOptionContext } from "../context/OptionsContext";
 import { ModalAdd } from "../components/Modal";
@@ -25,7 +25,7 @@ const Home = ({ url }) => {
         setTodos(data)
         setCurrentTodos(data)
       })
-      getListsByUser(user, url).then((data) => {
+      getDefaultLists(user, url).then((data) => {
         setLists(data)
         setIsLoading(false)
       })
@@ -82,7 +82,7 @@ const Home = ({ url }) => {
         <div
           className="d-flex shadow mb-3 rounded"
           style={{ backgroundColor: "rgba(20,20,20,0.2)" }}
-          key={index}
+          key={todo.id}
         >
           <button
             onClick={() => handleIsCompletedDebounced(index)}
@@ -106,7 +106,7 @@ const Home = ({ url }) => {
   const allLists = () =>{
     return lists.map((item, index) =>{
         return(
-        <li className="list-group-item d-flex justify-content-between align-items-center" key={item.id} onClick={() => handleOptionChange(item)}>
+        <li className="list-group-item d-flex justify-content-between align-items-center" key={index} onClick={() => handleOptionChange(item)}>
           {item}
         </li>
         )
