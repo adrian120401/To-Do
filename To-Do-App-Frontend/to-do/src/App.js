@@ -7,7 +7,7 @@ import { Navbar } from "./components/NavBar";
 import Protected from "./components/Protected";
 import { SelectedOptionsProvider } from "./context/OptionsContext";
 
-const url = 'https://192.168.1.2:8443'
+const url = 'http://192.168.1.2:8443'
 
 function App() {
   return (

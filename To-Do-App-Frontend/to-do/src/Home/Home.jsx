@@ -26,9 +26,7 @@ const Home = ({ url }) => {
         setCurrentTodos(data)
       })
       getListsByUser(user, url).then((data) => {
-        data.unshift("All")
         setLists(data)
-        setSelectedOption("All")
         setIsLoading(false)
       })
     }
@@ -64,7 +62,7 @@ const Home = ({ url }) => {
   }
 
   const handleFilterTodos = (item) => {
-    const filterList = item === "All" || !item ? todos : todos.filter((todo) => todo.lists.includes(item))
+    const filterList = item === "" || !item ? todos : todos.filter((todo) => todo.lists.includes(item))
     setCurrentTodos(filterList)
   };
 
@@ -108,7 +106,7 @@ const Home = ({ url }) => {
   const allLists = () =>{
     return lists.map((item, index) =>{
         return(
-        <li className="list-group-item d-flex justify-content-between align-items-center" key={index} onClick={() => handleOptionChange(item)}>
+        <li className="list-group-item d-flex justify-content-between align-items-center" key={item.id} onClick={() => handleOptionChange(item)}>
           {item}
         </li>
         )
@@ -119,11 +117,16 @@ const Home = ({ url }) => {
       <div className="row">
         <div className="col-sm mt-4 d-none d-lg-block">
           <ul className="list-group">
-            {isLoading ? <p>Is loading....</p> : allLists()}
+            {isLoading ? <p>Is loading....</p> :
+            <>
+              <li className="list-group-item d-flex justify-content-between align-items-center" onClick={() => handleOptionChange("")}>All</li>
+              {allLists()}
+            </>
+            }
           </ul>
         </div>
         <div className="container mt-4 col-sm  mx-auto">
-        <h3 className="border-bottom pb-1 mb-3">{selectedOption}</h3> 
+        <h3 className="border-bottom pb-1 mb-3">{selectedOption != "" ? selectedOption : 'All'}</h3> 
         {currentTodos.length !== 0 ?
           allTodos()
          : 

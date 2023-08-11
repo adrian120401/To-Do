@@ -16,3 +16,22 @@ export const addNewToDo = async(user,url, todo ) =>{
         throw error
     }
 }
+
+export const addNewList = async(user,url, newList) =>{
+  try {
+    const token = await user.getIdToken()
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newList)
+    }
+
+   return await fetch(`${url}/api/addNewList`,requestOptions)
+}catch (error) {
+    console.log(error)
+    throw error
+}
+}

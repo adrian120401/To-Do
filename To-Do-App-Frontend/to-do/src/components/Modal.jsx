@@ -17,7 +17,6 @@ const ModalAdd = ({ isShow, setShowModal, url, user, lists, todos, setTodos}) =>
         text: taskText,
       };
 
-      console.log(newTodo)
       addNewToDo(user,url, newTodo).then((data) => {
         if(data.ok){
           setTodos([...todos, newTodo])
