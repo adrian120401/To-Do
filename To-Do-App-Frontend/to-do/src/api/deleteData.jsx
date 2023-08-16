@@ -11,7 +11,7 @@ const deleteList = async(user,url, id, list) => {
 
        return await fetch(`${url}/api/deleteList?id=${id}&list=${list}`, requestOptions)
     }catch (error) {
-        console.log(error)
+        console.error(error)
         throw error
     }
 }

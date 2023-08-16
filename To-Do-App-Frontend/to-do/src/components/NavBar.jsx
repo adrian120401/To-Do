@@ -25,7 +25,7 @@ const Navbar = ({url}) => {
         try {
             await logOut()
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
     return(

@@ -11,7 +11,7 @@ const getAllTodos = async (user, url) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -29,7 +29,7 @@ const getListsByUser = async(user,url) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
@@ -47,7 +47,7 @@ const getDefaultLists = async(user,url) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

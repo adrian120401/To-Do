@@ -12,13 +12,12 @@ const addNewToDo = async(user,url, todo ) =>{
 
        return await fetch(`${url}/api/addNewTodo`,requestOptions)
     }catch (error) {
-        console.log(error)
+        console.error(error)
         throw error
     }
 }
 
 const addNewList = async(user,url, newList) =>{
-  console.log(newList)
   try {
     const token = await user.getIdToken()
     const requestOptions = {
@@ -31,7 +30,7 @@ const addNewList = async(user,url, newList) =>{
 
    return await fetch(`${url}/api/addNewList?list=${newList}`,requestOptions)
 }catch (error) {
-    console.log(error)
+    console.error(error)
     throw error
 }
 }

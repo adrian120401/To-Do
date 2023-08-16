@@ -4,22 +4,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faAdd, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { getAllTodos, getListsByUser, getDefaultLists } from "../api/getData";
 import { toDoCompleted } from "../api/editData";
-import { SelectedOptionContext } from "../context/OptionsContext";
+import { ListsContext } from "../context/ListContext";
 import { ModalAdd } from "../components/Modal";
 import { deleteList } from "../api/deleteData";
 import { addNewList } from "../api/addData";
 
 const Home = ({ url }) => {
   const [todos, setTodos] = useState([]);
-  const [defaultLists, setDefaultLists] = useState([]);
-  const [userLists, setUserLists] = useState([]);
   const [newList, setNewList] = useState("")
   const [isLoading, setIsLoading] = useState(true);
   const [currentTodos, setCurrentTodos] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { selectedOption, setSelectedOption } = useContext(
-    SelectedOptionContext
+  const { selectedOption, setSelectedOption,
+     listUser, setListUser,
+     defaultLists, setDefaultLists } = useContext(
+    ListsContext
   );
 
   const { user } = UserAuth();
@@ -27,7 +27,6 @@ const Home = ({ url }) => {
   useEffect(() => {
     if (user && Object.keys(user).length !== 0) {
       getAllTodos(user, url).then((data) => {
-        console.log(data)
         setTodos(data);
         setCurrentTodos(data);
       });
@@ -35,7 +34,7 @@ const Home = ({ url }) => {
         setDefaultLists(data);
       });
       getListsByUser(user, url).then((data) => {
-        setUserLists(data);
+        setListUser(data)
         setIsLoading(false);
       });
     }
@@ -70,7 +69,6 @@ const Home = ({ url }) => {
   };
 
   const handleFilterTodos = (item) => {
-    console.log(todos)
     const filterList =
       item === "" || !item
         ? todos
@@ -93,10 +91,10 @@ const Home = ({ url }) => {
       addNewList(user,url,newList).then((data) => {
       if(data.ok){
         const value = {
-          "id": userLists.length + 1,
+          "id": listUser.length + 1,
           "name" : newList
         }
-        setUserLists([...userLists, value])
+        setListUser([...listUser, value])
         setNewList("")
       }
     })
@@ -108,8 +106,8 @@ const Home = ({ url }) => {
     e.stopPropagation();
     deleteList(user, url, id, list).then((data) => {
       if (data.ok) {
-        const newList = userLists.filter((list) => list.id !== id);
-        setUserLists(newList);
+        const newList = listUser.filter((list) => list.id !== id);
+        setListUser(newList);
       }
     });
   };
@@ -156,15 +154,16 @@ const Home = ({ url }) => {
   };
 
   const allUserLists = () => {
-    return userLists.map((item, index) => {
+    return listUser.map((item, index) => {
       return (
         <li
           className="list-group-item d-flex justify-content-between align-items-center"
           key={item.id}
           onClick={() => handleOptionChange(item.name)}
         >
-          <div>
+          
             {item.name}
+           <div> 
             <button
               className="btn btn-primary-secondary rounded-circle"
               type="button"
@@ -200,7 +199,7 @@ const Home = ({ url }) => {
                    <div className="input-group">
                     <input
                       type="text"
-                      className="form-control p-0"
+                      className="form-control pr-3"
                       placeholder="Create a new list"
                       value={newList}
                       onChange={(event) => setNewList(event.target.value)}
@@ -248,7 +247,7 @@ const Home = ({ url }) => {
         url={url}
         user={user}
         defaultLists={defaultLists}
-        userLists={userLists}
+        userLists={listUser}
         todos={todos}
         setTodos={setTodos}
       />

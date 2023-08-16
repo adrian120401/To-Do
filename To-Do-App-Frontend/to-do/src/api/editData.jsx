@@ -14,7 +14,7 @@ const toDoCompleted = async (user, url, id, status) => {
       requestOptions
     );
   } catch (error) {
-    console.log(error)
+    console.error(error)
     throw error
   }
 };

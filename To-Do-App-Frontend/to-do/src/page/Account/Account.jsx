@@ -9,7 +9,7 @@ const Account = () => {
         try {
             await logOut()
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
