@@ -6,6 +6,7 @@ import { SelectedOptionContext } from "../context/OptionsContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { addNewList } from "../api/addData";
+import { deleteList } from "../api/deleteData";
 
 const Menu = ({ isOpen, url , isMenuOpen}) => {
     const [defaultLists , setDefaultLists] = useState([])
@@ -30,7 +31,8 @@ const Menu = ({ isOpen, url , isMenuOpen}) => {
     },[user, url])
 
     const saveNewList = () => {
-      addNewList(user,url,newList).then((data) => {
+      if(newList !== ""){
+        addNewList(user,url,newList).then((data) => {
         if(data.ok){
           const value = {
             "id": userLists.length + 1,
@@ -38,6 +40,16 @@ const Menu = ({ isOpen, url , isMenuOpen}) => {
           }
           setUserLists([...userLists, value])
           setNewList("")
+        }
+      })
+      }
+    }
+    const deleteItem = (e,id, list) => {
+      e.stopPropagation()
+      deleteList(user, url, id, list).then((data) => {
+        if(data.ok){
+          const newList = userLists.filter((list) => list.id !== id)
+          setUserLists(newList)
         }
       })
     }
@@ -61,7 +73,7 @@ const Menu = ({ isOpen, url , isMenuOpen}) => {
           <li key={list.id} onClick={() => handleOptionSelect(list.name)}>
             <div>
               {list.name}
-                <button className="btn btn-primary-secondary rounded-circle" type="button"><FontAwesomeIcon icon={faTrash} /></button>
+                <button className="btn btn-primary-secondary rounded-circle" type="button" onClick={(e) => deleteItem(e,list.id, list.name)}><FontAwesomeIcon icon={faTrash} /></button>
             </div>
           </li>
         )
@@ -90,7 +102,7 @@ const Menu = ({ isOpen, url , isMenuOpen}) => {
           {getUserListsItems()}
           <li>
             <div className="input-group">
-              <input type="text" class="form-control p-0" placeholder="Create a new list" value={newList} onChange={(event) => setNewList(event.target.value)}
+              <input type="text" className="form-control p-0" placeholder="Create a new list" value={newList} onChange={(event) => setNewList(event.target.value)}
               aria-label="Create a new list" aria-describedby="basic-addon2" />
               <div className="input-group-append m-">
                 <button className="btn btn-primary-secondary rounded-circle" type="button" onClick={saveNewList}><FontAwesomeIcon icon={faAdd} /></button>

@@ -8,7 +8,7 @@ public class ToDo {
 
     private Date completed;
     private Date modified;
-    private List<String> lists;
+    private String lists;
 
     private String id;
 
@@ -30,11 +30,11 @@ public class ToDo {
         this.modified = modified;
     }
 
-    public List<String> getLists() {
+    public String getLists() {
         return lists;
     }
 
-    public void setLists(List<String> lists) {
+    public void setLists(String lists) {
         this.lists = lists;
     }
 

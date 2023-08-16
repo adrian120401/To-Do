@@ -27,4 +27,8 @@ public class ListsService {
     public List<String> getDefaultLists() throws ExecutionException, InterruptedException {
         return listsRepository.getDefaultLists();
     }
+
+    public void deleteList(String userId, String id, String list) throws ExecutionException, InterruptedException {
+        listsRepository.deleteList(userId, id, list);
+    }
 }

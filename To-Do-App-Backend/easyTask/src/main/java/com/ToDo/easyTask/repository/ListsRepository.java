@@ -65,4 +65,19 @@ public class ListsRepository {
         return lists;
     }
 
+    public void deleteList(String userId, String id, String list) throws ExecutionException, InterruptedException {
+        List<Map<String,String>> lists = new ArrayList<>();
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        try {
+            DocumentReference userDocument = dbFirestore.collection("todos").document(userId);
+            DocumentReference listDocument = userDocument.collection("lists").document(id);
+
+            toDoRepository.deleteTodosByList(userId, list);
+            listDocument.delete();
+        }catch (Exception e){
+            throw e;
+        }
+
+    }
+
 }

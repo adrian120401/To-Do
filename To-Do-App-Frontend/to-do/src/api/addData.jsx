@@ -1,4 +1,4 @@
-export const addNewToDo = async(user,url, todo ) =>{
+const addNewToDo = async(user,url, todo ) =>{
     try {
         const token = await user.getIdToken()
         const requestOptions = {
@@ -17,7 +17,7 @@ export const addNewToDo = async(user,url, todo ) =>{
     }
 }
 
-export const addNewList = async(user,url, newList) =>{
+const addNewList = async(user,url, newList) =>{
   console.log(newList)
   try {
     const token = await user.getIdToken()
@@ -35,3 +35,5 @@ export const addNewList = async(user,url, newList) =>{
     throw error
 }
 }
+
+export {addNewList, addNewToDo}

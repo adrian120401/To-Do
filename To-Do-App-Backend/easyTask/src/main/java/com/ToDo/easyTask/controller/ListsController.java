@@ -62,4 +62,18 @@ public class ListsController {
         }
     }
 
+    @DeleteMapping("api/deleteList")
+    public ResponseEntity<String> deleteList(@RequestHeader("Authorization") String authToken, @RequestParam(name="id") String id, @RequestParam(name = "list") String list){
+        try {
+            String idToken = authToken.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+            String userId = decodedToken.getUid();
+            listsService.deleteList(userId, id, list);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("{\"message\": \"List deleted correctly\"}");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("{\"message\": \"Could not deleted list\"}");
+        }
+
+    }
+
 }

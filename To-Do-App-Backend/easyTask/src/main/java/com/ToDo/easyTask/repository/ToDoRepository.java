@@ -34,7 +34,7 @@ public class ToDoRepository {
             toDo.setId(document.getId());
             toDo.setId(document.getString("id"));
             toDo.setText(document.getString("text"));
-            toDo.setLists((List<String>) document.get("lists"));
+            toDo.setLists(document.getString("lists"));
             toDo.setModified(document.getDate("modified"));
             toDo.setIsCompleted(document.getBoolean("isCompleted"));
             if (toDo.getIsCompleted()) {
@@ -107,6 +107,31 @@ public class ToDoRepository {
             e.printStackTrace();
         }
         return newId;
+    }
+
+    public void deleteTodosByList(String userId, String list) throws ExecutionException, InterruptedException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+
+        try{
+            DocumentReference userDocument = dbFirestore.collection("todos").document(userId);
+
+            CollectionReference todosCollection = userDocument.collection("todos");
+
+            ApiFuture<QuerySnapshot> future = todosCollection.get();
+
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            for (DocumentSnapshot document : documents) {
+                if(Objects.equals(document.getString("lists"), list)){
+                    DocumentReference docRef = todosCollection.document(document.getId());
+                    docRef.delete();
+                }
+            }
+        }catch (ExecutionException | InterruptedException e){
+            logger.error(String.valueOf(e));
+            throw e;
+        }
+
     }
 
 }

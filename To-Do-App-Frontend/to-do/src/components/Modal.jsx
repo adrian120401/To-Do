@@ -1,10 +1,18 @@
 import { Button, Modal, Form } from "react-bootstrap";
 import { addNewToDo } from "../api/addData";
-import { useState } from "react";
-const ModalAdd = ({ isShow, setShowModal, url, user, lists, todos, setTodos}) => {
+import { useEffect, useState } from "react";
+const ModalAdd = ({ isShow, setShowModal, url, user, defaultLists,userLists, todos, setTodos}) => {
   const [taskText, setTaskText] = useState("")
   const [selectedOptionList , setSelectedOptionList] = useState("")
   const [error , setError] = useState(false)
+  const [lists, setLists] = useState([])
+
+
+  useEffect(()=>{
+    const userListArr = userLists.map(({ name }) => name);
+    setLists([...defaultLists, ...userListArr])
+  },[userLists])
+
 
   const handleAddNewToDo = (event) => {
     event.preventDefault()
@@ -12,7 +20,7 @@ const ModalAdd = ({ isShow, setShowModal, url, user, lists, todos, setTodos}) =>
       const newTodo = {
         completed: null,
         isCompleted: false,
-        lists: [selectedOptionList],
+        lists: selectedOptionList,
         modified: Date.now(),
         text: taskText,
       };
