@@ -6,6 +6,7 @@ import { getAllTodos, getListsByUser, getDefaultLists } from "../api/getData";
 import { toDoCompleted } from "../api/editData";
 import { ListsContext } from "../context/ListContext";
 import { ModalAdd } from "../components/Modal";
+import { ModalInfo } from "../components/ModalInfo";
 import { deleteList } from "../api/deleteData";
 import { addNewList } from "../api/addData";
 
@@ -15,6 +16,8 @@ const Home = ({ url }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentTodos, setCurrentTodos] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState(false)
+  const [currentTodo, setCurrentTodo] = useState(null)
 
   const { selectedOption, setSelectedOption,
      listUser, setListUser,
@@ -112,6 +115,11 @@ const Home = ({ url }) => {
     });
   };
 
+  const openModalInfo = (todo) => {
+    setCurrentTodo(todo)
+    setModalInfo(true)
+  }
+
   const allTodos = () => {
     return currentTodos.map((todo, index) => {
       return (
@@ -119,9 +127,10 @@ const Home = ({ url }) => {
           className="d-flex shadow mb-3 rounded"
           style={{ backgroundColor: "rgba(20,20,20,0.2)" }}
           key={todo.id}
+          onClick={() => openModalInfo(todo)}
         >
           <button
-            onClick={() => handleIsCompletedDebounced(index)}
+            onClick={(e) => {e.stopPropagation() ; handleIsCompletedDebounced(index)}}
             type="button"
             className="border-0 p-2 btn"
           >
@@ -251,6 +260,8 @@ const Home = ({ url }) => {
         todos={todos}
         setTodos={setTodos}
       />
+      <ModalInfo isShow={modalInfo} setShowModalInfo={setModalInfo} currentTodo={currentTodo}
+       defaultLists={defaultLists} userLists={listUser}/>
     </div>
   );
 };

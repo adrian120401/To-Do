@@ -71,7 +71,7 @@ const ModalAdd = ({ isShow, setShowModal, url, user, defaultLists,userLists, tod
         </Modal.Footer>
       </Form>
     </Modal>
-  );
-};
+  )
+}
 
-export { ModalAdd };
+export { ModalAdd }
