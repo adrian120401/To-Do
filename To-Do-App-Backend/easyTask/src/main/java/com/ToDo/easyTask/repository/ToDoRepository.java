@@ -2,6 +2,7 @@ package com.ToDo.easyTask.repository;
 
 import com.ToDo.easyTask.model.ToDo;
 import com.google.api.core.ApiFuture;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
@@ -55,7 +56,10 @@ public class ToDoRepository {
         DocumentReference todoDocument = todosCollection.document(id);
 
         todoDocument.update("isCompleted", status);
-
+        if(status){
+            Timestamp fechaTimestamp = Timestamp.now();
+            todoDocument.update("completed", fechaTimestamp);
+        }
     }
 
     public void addNewTodo(String userId, ToDo todo) throws ExecutionException, InterruptedException {
@@ -63,6 +67,20 @@ public class ToDoRepository {
         int newId = verifyDocument(userId, "todos");
         todo.setId(String.valueOf(newId));
         dbFirestore.collection("todos").document(userId).collection("todos").document(String.valueOf(newId)).set(todo);
+    }
+
+    public void editTodo(String userId, ToDo todo){
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        DocumentReference userDocument = dbFirestore.collection("todos").document(userId);
+
+        CollectionReference todosCollection = userDocument.collection("todos");
+
+        DocumentReference todoDocument = todosCollection.document(todo.getId());
+
+        Timestamp fechaTimestamp = Timestamp.now();
+        todoDocument.update("text", todo.getText());
+        todoDocument.update("lists", todo.getLists());
+        todoDocument.update("modified", fechaTimestamp);
     }
 
 

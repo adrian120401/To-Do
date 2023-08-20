@@ -32,4 +32,8 @@ public class ToDoService {
     public void addNewTodo(String userId, ToDo todo) throws ExecutionException, InterruptedException {
         toDoRepository.addNewTodo(userId,todo);
     }
+
+    public void editTodo(String userId, ToDo todo){
+        toDoRepository.editTodo(userId, todo);
+    }
 }

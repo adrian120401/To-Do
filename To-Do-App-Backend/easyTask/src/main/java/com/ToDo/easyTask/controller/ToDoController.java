@@ -64,7 +64,19 @@ public class ToDoController {
         }
     }
 
-    @GetMapping("/test")
+    @PutMapping("editTodo")
+    public void editTodo(@RequestHeader("Authorization") String authToken, @RequestBody ToDo todo) {
+        try {
+            String idToken = authToken.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+            String userId = decodedToken.getUid();
+            toDoService.editTodo(userId, todo);
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+        @GetMapping("/test")
     public String test(){
         return "Test";
     }
