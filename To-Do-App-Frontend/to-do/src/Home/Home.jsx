@@ -69,6 +69,7 @@ const Home = ({ url }) => {
       updatedTodos[index].id,
       updatedTodos[index].isCompleted
     );
+    setCurrentTodo(updatedTodos[index])
   };
 
   const handleFilterTodos = (item) => {

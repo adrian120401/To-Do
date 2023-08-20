@@ -62,7 +62,7 @@ const ModalAdd = ({ isShow, setShowModal, url, user, defaultLists,userLists, tod
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="danger" onClick={() => setShowModal(false)}>
             Close
           </Button>
           <Button variant="success" type="submit">
