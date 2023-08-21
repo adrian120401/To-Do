@@ -9,6 +9,7 @@ import { ModalAdd } from "../components/Modal";
 import { ModalInfo } from "../components/ModalInfo";
 import { deleteList } from "../api/deleteData";
 import { addNewList } from "../api/addData";
+import { deleteToDo } from "../api/deleteData";
 
 const Home = ({ url }) => {
   const [todos, setTodos] = useState([]);
@@ -45,7 +46,7 @@ const Home = ({ url }) => {
 
   useEffect(() => {
     handleFilterTodos(selectedOption);
-  }, [selectedOption, todos.length]);
+  }, [selectedOption, todos]);
 
   const debounce = (func, delay) => {
     let timeoutId;
@@ -104,7 +105,14 @@ const Home = ({ url }) => {
     })
     }
   }
-
+  const deleteToDOItem = (todo, e) => {
+    e.stopPropagation()
+    deleteToDo(user,url,todo.id).then(data =>{
+      if(data.ok){
+        setTodos(todos.filter(value => value.id !== todo.id))
+      }
+    })
+  } 
 
   const deleteItem = (e, id, list) => {
     e.stopPropagation();
@@ -125,12 +133,13 @@ const Home = ({ url }) => {
     return currentTodos.map((todo, index) => {
       return (
         <div
-          className="d-flex shadow mb-3 rounded"
+          className="d-flex shadow mb-3 rounded justify-content-between"
           style={{ backgroundColor: "rgba(20,20,20,0.2)" }}
           key={todo.id}
           onClick={() => openModalInfo(todo)}
         >
-          <button
+          <div className="d-flex flex-row">
+            <button
             onClick={(e) => {e.stopPropagation() ; handleIsCompletedDebounced(index)}}
             type="button"
             className="border-0 p-2 btn"
@@ -141,9 +150,15 @@ const Home = ({ url }) => {
               <FontAwesomeIcon icon={faCheck} />
             )}
           </button>
-          <div>
             <p>{todo.text}</p>
           </div>
+          <button
+              className="btn btn-primary-secondary rounded-circle"
+              type="button"
+               onClick={(e) => deleteToDOItem(todo, e)} 
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
         </div>
       );
     });
@@ -262,7 +277,9 @@ const Home = ({ url }) => {
         setTodos={setTodos}
       />
       <ModalInfo isShow={modalInfo} setShowModalInfo={setModalInfo} currentTodo={currentTodo}
-       defaultLists={defaultLists} userLists={listUser}/>
+       defaultLists={defaultLists} userLists={listUser} url={url} todos={todos} setTodos={setTodos}
+        setCurrentTodo={setCurrentTodo}
+       user={user}/>
     </div>
   );
 };

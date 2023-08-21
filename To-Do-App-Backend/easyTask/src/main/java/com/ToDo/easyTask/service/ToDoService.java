@@ -36,4 +36,8 @@ public class ToDoService {
     public void editTodo(String userId, ToDo todo){
         toDoRepository.editTodo(userId, todo);
     }
+
+    public void deleteToDo(String userId,String id){
+        toDoRepository.deleteToDo(userId, id);
+    }
 }

@@ -64,20 +64,28 @@ public class ToDoController {
         }
     }
 
-    @PutMapping("editTodo")
-    public void editTodo(@RequestHeader("Authorization") String authToken, @RequestBody ToDo todo) {
+    @PutMapping("/api/editTodo")
+    public ResponseEntity<String> editTodo(@RequestHeader("Authorization") String authToken, @RequestBody ToDo todo) {
         try {
             String idToken = authToken.replace("Bearer ", "");
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
             String userId = decodedToken.getUid();
             toDoService.editTodo(userId, todo);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{\"message\": \"To-do modified correctly\"}");
         } catch (FirebaseAuthException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body("{\"message\": \"Could not modified to-do\"}");
         }
     }
-
-        @GetMapping("/test")
-    public String test(){
-        return "Test";
+    @DeleteMapping("/api/deleteToDo")
+    public ResponseEntity<String> deleteToDo(@RequestHeader("Authorization") String authToken,@RequestParam(name = "id") String id){
+        try {
+            String idToken = authToken.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+            String userId = decodedToken.getUid();
+            toDoService.deleteToDo(authToken, id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("{\"message\": \"To-do deleted correctly\"}");
+        }catch (FirebaseAuthException e) {
+            return ResponseEntity.badRequest().body("{\"message\": \"Could not deleted to-do\"}");
+        }
     }
 }

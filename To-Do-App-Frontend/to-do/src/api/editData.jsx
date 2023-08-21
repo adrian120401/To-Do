@@ -31,14 +31,11 @@ const editCurrentToDo = async(url, user, todo) =>{
       body: JSON.stringify(todo)
     }
 
-    await fetch(
-      `${url}/api/editTodo}`,
-      requestOptions
-    );
+    return await fetch(`${url}/api/editTodo`,requestOptions);
   } catch (error) {
     console.error(error)
     throw error
   }
 }
 
-export {toDoCompleted}
+export {toDoCompleted, editCurrentToDo}

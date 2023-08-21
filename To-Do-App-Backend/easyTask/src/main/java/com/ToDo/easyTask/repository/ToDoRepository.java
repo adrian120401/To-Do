@@ -77,10 +77,9 @@ public class ToDoRepository {
 
         DocumentReference todoDocument = todosCollection.document(todo.getId());
 
-        Timestamp fechaTimestamp = Timestamp.now();
         todoDocument.update("text", todo.getText());
         todoDocument.update("lists", todo.getLists());
-        todoDocument.update("modified", fechaTimestamp);
+        todoDocument.update("modified", todo.getModified());
     }
 
 
@@ -150,6 +149,13 @@ public class ToDoRepository {
             throw e;
         }
 
+    }
+
+    public void deleteToDo(String userId,String id){
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        DocumentReference docRef = dbFirestore.collection("todos").document(userId)
+                .collection("todos").document(id);
+        docRef.delete();
     }
 
 }
