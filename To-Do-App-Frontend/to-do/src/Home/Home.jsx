@@ -10,6 +10,7 @@ import { ModalInfo } from "../components/ModalInfo";
 import { deleteList } from "../api/deleteData";
 import { addNewList } from "../api/addData";
 import { deleteToDo } from "../api/deleteData";
+import { useNavigate } from 'react-router-dom'
 
 const Home = ({ url }) => {
   const [todos, setTodos] = useState([]);
@@ -19,6 +20,8 @@ const Home = ({ url }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState(false)
   const [currentTodo, setCurrentTodo] = useState(null)
+
+  const navigate = useNavigate();
 
   const { selectedOption, setSelectedOption,
      listUser, setListUser,
@@ -41,6 +44,8 @@ const Home = ({ url }) => {
         setListUser(data)
         setIsLoading(false);
       });
+    }else if(!user){
+      navigate("/signin")
     }
   }, [user, url]);
 

@@ -26,7 +26,7 @@ const SignIn = () => {
     },[user])
     
     return(
-        <div>
+        <div  className="d-flex align-items-center flex-column mt-4">
             <header>
                 <h1>Sign In</h1>
             </header>

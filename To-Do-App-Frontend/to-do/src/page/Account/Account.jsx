@@ -14,10 +14,16 @@ const Account = () => {
     }
 
     return(
-        <div>
-            <h1>Account</h1>
-            <p>Welcome to EasyTask, {user?.displayName}</p>
-            <button type="button" class="btn btn-outline-danger mx-2" onClick={handleLogout}>Logout</button>
+        <div className="d-flex align-items-center flex-column mt-4">
+            <div>
+                <img alt={user?.displayName} src={user?.photoURL} 
+                className="img-thumbnail"></img>
+            </div>
+            <div className="d-flex align-items-center flex-column mt-3">
+                <p>Welcome to EasyTask, {user?.displayName}</p>
+                <button type="button" class="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+            </div>
+            
         </div>
     )
 }
